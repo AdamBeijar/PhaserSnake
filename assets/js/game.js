@@ -6,14 +6,18 @@ var snake, apple, squareSize, score, speed,
 var Game = {
 	preload : function() {
 		game.load.image('snake', './assets/images/snake.png');
-		game.load.image('apple', './assets/images/apple.png');
+        game.load.image('apple', './assets/images/apple.png');
+        game.load.image('Up', '/assets/images/Directions/Up.png');
+        game.load.image('Down', '/assets/images/Directions/Down.png');
+        game.load.image('Right', '/assets/images/Directions/Right.png');
+        game.load.image('Left', '/assets/images/Directions/Left.png');
 	},
 	create : function() {
 		// Initilaze
 		snake = [];						// this will work as a stack
 		apple = {};                     // An object for the apple;
 		squareSize = 15;                // The length of a side of the squares. Our image is 15x15 pixels.
-		speed = 9;
+		speed = 0;
 		direction = 'right';			// The directin of our snake
         new_direction = null;
         updateDelay= 0;			        // A Buffer to store the new direction into
@@ -82,6 +86,10 @@ var Game = {
             this.selfCollision(firstCell);
             this.wallCollision(firstCell);
         }
+        this.add.button(300, 330, 'Up', this.up, this);
+        this.add.button(300, 390, 'Down', this.down, this);
+        this.add.button(270, 360, 'Left', this.left, this);
+        this.add.button(330, 360, 'Right', this.right, this);
     },
     appleCollision: function(){
         for (var i = 0; i < snake.length; i++) {
@@ -91,7 +99,7 @@ var Game = {
                 this.generateApple();
                 score++;
                 scoreText.text = 'Score: ' + score;
-                //speed ++
+                speed = speed + 0.5;
                 console.log("speed = " + speed);
             }
         }
@@ -121,5 +129,25 @@ var Game = {
             game.state.start('Game_Over');
             console.log(score)
         }
-    }
+    },
+    up: function(){
+        if (direction!='down') {
+            direction = 'up';
+        }
+    },
+    down: function(){
+        if (direction!='up') {
+            direction = 'down';
+        }
+    },
+    right: function(){
+        if (direction!='left') {
+            direction = 'right';
+        }
+    },
+    left: function(){
+        if (direction!='right') {
+            direction = 'left';
+        }
+    },
 };
